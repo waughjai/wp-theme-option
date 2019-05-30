@@ -1,0 +1,26 @@
+{
+    "name": "waughj/wp-theme-option",
+    "description": "Classes for simplifying the creation of theme options, option sections, & option pages.",
+    "keywords": [ "wordpress", "option", "theme", "generator" ],
+    "license": "AGPL-3.0-or-later",
+    "authors": [
+        {
+            "name": "Jaimeson Waugh",
+            "email": "waughjai@gmail.com"
+        }
+    ],
+    "type": "library",
+    "require": {
+		"php": ">=7.2",
+		"waughj/test-hash-item": ">=1.0.1",
+		"waughj/verified-arguments-same-type": "*"
+    },
+    "require-dev": {
+		"phpunit/phpunit": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "WaughJ\\WPThemeOption\\": "src/"
+        }
+    }
+}
