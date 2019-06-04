@@ -3,7 +3,6 @@
 declare( strict_types = 1 );
 namespace WaughJ\WPThemeOption
 {
-	use function WaughJ\TestHashItem\TestHashItemExists;
 	use WaughJ\VerifiedArgumentsSameType\VerifiedArgumentsSameType;
 
 	class WPThemeOption
@@ -53,7 +52,7 @@ namespace WaughJ\WPThemeOption
 		{
 			$options = get_option( $this->section->getPage()->getOptionsGroup() );
 			return ( is_array( $options ) )
-				? TestHashItemExists( $options, $this->slug, '' )
+				? $options[ $this->slug ] ?? ''
 				: ( string )( $options );
 		}
 

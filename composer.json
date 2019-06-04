@@ -12,7 +12,6 @@
     "type": "library",
     "require": {
 		"php": ">=7.2",
-		"waughj/test-hash-item": ">=1.0.1",
 		"waughj/verified-arguments-same-type": "*"
     },
     "require-dev": {
