@@ -3,7 +3,7 @@
 declare( strict_types = 1 );
 namespace WaughJ\WPThemeOption
 {
-	use WaughJ\VerifiedArgumentsSameType\VerifiedArgumentsSameType;
+	use WaughJ\VerifiedArguments\VerifiedArguments;
 
 	class WPThemeOption
 	{
@@ -12,7 +12,7 @@ namespace WaughJ\WPThemeOption
 			$this->section = $section;
 			$this->slug = $slug;
 			$this->name = __( $name, 'textdomain' );
-			$this->other_attributes = new VerifiedArgumentsSameType( $other_attributes, self::DEFAULT_ATTRIBUTES );
+			$this->other_attributes = new VerifiedArguments( $other_attributes, self::DEFAULT_ATTRIBUTES );
 			add_action( 'admin_init', [ $this, 'register' ] );
 		}
 
@@ -31,20 +31,27 @@ namespace WaughJ\WPThemeOption
 
 		public function render() : void
 		{
-			switch ( $this->other_attributes->get( 'input_type' ) )
+			if ( $this->other_attributes->get( 'custom_render' ) )
 			{
-				case( 'checkbox' ):
+				$this->other_attributes->get( 'custom_render' )( $this );
+			}
+			else
+			{
+				switch ( $this->other_attributes->get( 'input_type' ) )
 				{
-					$checked_text = ( $this->getOptionValue() ) ? ' checked="checked"' : '';
-					?><input type="checkbox" id="<?= $this->slug; ?>" name="<?= $this->section->getPage()->getOptionsGroup(); ?>[<?= $this->slug; ?>]"<?= $checked_text; ?> /><?php
-				}
-				break;
+					case( 'checkbox' ):
+					{
+						$checked_text = ( $this->getOptionValue() ) ? ' checked="checked"' : '';
+						?><input type="checkbox" id="<?= $this->slug; ?>" name="<?= $this->section->getPage()->getOptionsGroup(); ?>[<?= $this->slug; ?>]"<?= $checked_text; ?> /><?php
+					}
+					break;
 
-				default:
-				{
-					?><input type="text" id="<?= $this->slug; ?>" name="<?= $this->section->getPage()->getOptionsGroup(); ?>[<?= $this->slug; ?>]" placeholder="<?= $this->name; ?>" value="<?= $this->getOptionValue(); ?>" /><?php
+					default:
+					{
+						?><input type="text" id="<?= $this->slug; ?>" name="<?= $this->section->getPage()->getOptionsGroup(); ?>[<?= $this->slug; ?>]" placeholder="<?= $this->name; ?>" value="<?= $this->getOptionValue(); ?>" /><?php
+					}
+					break;
 				}
-				break;
 			}
 		}
 
@@ -64,7 +71,8 @@ namespace WaughJ\WPThemeOption
 
 		private const DEFAULT_ATTRIBUTES =
 		[
-			'input_type' => 'text'
+			'input_type',
+			'custom_render'
 		];
 	}
 }
